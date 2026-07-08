@@ -22,6 +22,24 @@ namespace Messenger.Infrastructure.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Messenger.Domain.Entities.BlockedUser", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BlockedUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("UserId", "BlockedUserId");
+
+                    b.HasIndex("BlockedUserId");
+
+                    b.ToTable("BlockedUsers", (string)null);
+                });
+
             modelBuilder.Entity("Messenger.Domain.Entities.Chat", b =>
                 {
                     b.Property<Guid>("Id")
@@ -62,6 +80,33 @@ namespace Messenger.Infrastructure.Persistence.Migrations
                     b.ToTable("chat_participants", (string)null);
                 });
 
+            modelBuilder.Entity("Messenger.Domain.Entities.Contact", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ContactUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)");
+
+                    b.HasKey("UserId", "ContactUserId");
+
+                    b.HasIndex("ContactUserId");
+
+                    b.ToTable("Contacts", (string)null);
+                });
+
             modelBuilder.Entity("Messenger.Domain.Entities.Message", b =>
                 {
                     b.Property<Guid>("Id")
@@ -80,6 +125,10 @@ namespace Messenger.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
+
+                    b.Property<int?>("Duration")
+                        .HasColumnType("integer")
+                        .HasColumnName("duration");
 
                     b.Property<string>("MediaUrl")
                         .HasMaxLength(2048)
@@ -212,6 +261,48 @@ namespace Messenger.Infrastructure.Persistence.Migrations
                     b.ToTable("users", (string)null);
                 });
 
+            modelBuilder.Entity("Messenger.Domain.Entities.UserDevice", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DeviceToken")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DeviceType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("UserId", "DeviceToken");
+
+                    b.ToTable("UserDevices", (string)null);
+                });
+
+            modelBuilder.Entity("Messenger.Domain.Entities.BlockedUser", b =>
+                {
+                    b.HasOne("Messenger.Domain.Entities.User", "BlockedUserNavigation")
+                        .WithMany()
+                        .HasForeignKey("BlockedUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Messenger.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("BlockedUserNavigation");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Messenger.Domain.Entities.ChatParticipant", b =>
                 {
                     b.HasOne("Messenger.Domain.Entities.Chat", "Chat")
@@ -227,6 +318,25 @@ namespace Messenger.Infrastructure.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Chat");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Messenger.Domain.Entities.Contact", b =>
+                {
+                    b.HasOne("Messenger.Domain.Entities.User", "ContactUser")
+                        .WithMany()
+                        .HasForeignKey("ContactUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Messenger.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ContactUser");
 
                     b.Navigation("User");
                 });
@@ -280,6 +390,17 @@ namespace Messenger.Infrastructure.Persistence.Migrations
                 {
                     b.HasOne("Messenger.Domain.Entities.User", "User")
                         .WithMany("Stories")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Messenger.Domain.Entities.UserDevice", b =>
+                {
+                    b.HasOne("Messenger.Domain.Entities.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
