@@ -18,8 +18,8 @@ public sealed class SearchUsersQueryHandler : IRequestHandler<SearchUsersQuery, 
         var term = request.SearchTerm.ToLower();
 
         return await _context.Users
-            .Where(u => u.PhoneNumber.Contains(term) || 
-                        u.FirstName.ToLower().Contains(term) || 
+            .Where(u => u.PhoneNumber.Contains(term) ||
+                        u.FirstName.ToLower().Contains(term) ||
                         (u.LastName != null && u.LastName.ToLower().Contains(term)))
             .Take(50)
             .Select(u => new UserSearchResultDto(u.Id, u.FirstName, u.LastName, u.AvatarUrl))

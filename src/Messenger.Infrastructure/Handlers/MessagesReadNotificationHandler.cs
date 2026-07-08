@@ -17,20 +17,20 @@ public sealed class MessagesReadNotificationHandler
     private readonly ILogger<MessagesReadNotificationHandler> _logger;
 
     public MessagesReadNotificationHandler(
-        IHubContext<ChatHub, IChatHubClient>     hubContext,
+        IHubContext<ChatHub, IChatHubClient> hubContext,
         ILogger<MessagesReadNotificationHandler> logger)
     {
         _hubContext = hubContext;
-        _logger     = logger;
+        _logger = logger;
     }
 
     public async Task Handle(
         MessagesReadNotification notification,
-        CancellationToken        cancellationToken)
+        CancellationToken cancellationToken)
     {
         var dto = new ChatHubReadReceiptDto(
-            ChatId:        notification.ChatId,
-            ReaderId:      notification.ReaderId,
+            ChatId: notification.ChatId,
+            ReaderId: notification.ReaderId,
             UpToMessageId: notification.UpToMessageId);
 
         var groupName = ChatHub.ChatGroupName(notification.ChatId);

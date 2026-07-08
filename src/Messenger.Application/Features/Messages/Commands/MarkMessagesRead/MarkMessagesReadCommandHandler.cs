@@ -16,23 +16,23 @@ namespace Messenger.Application.Features.Messages.Commands.MarkMessagesRead;
 public sealed class MarkMessagesReadCommandHandler
     : IRequestHandler<MarkMessagesReadCommand, Unit>
 {
-    private readonly IApplicationDbContext               _db;
-    private readonly IPublisher                          _publisher;
+    private readonly IApplicationDbContext _db;
+    private readonly IPublisher _publisher;
     private readonly ILogger<MarkMessagesReadCommandHandler> _logger;
 
     public MarkMessagesReadCommandHandler(
-        IApplicationDbContext                    db,
-        IPublisher                               publisher,
-        ILogger<MarkMessagesReadCommandHandler>  logger)
+        IApplicationDbContext db,
+        IPublisher publisher,
+        ILogger<MarkMessagesReadCommandHandler> logger)
     {
-        _db        = db;
+        _db = db;
         _publisher = publisher;
-        _logger    = logger;
+        _logger = logger;
     }
 
     public async Task<Unit> Handle(
         MarkMessagesReadCommand command,
-        CancellationToken       cancellationToken)
+        CancellationToken cancellationToken)
     {
         // Find the target message's timestamp for range filtering
         var targetMessage = await _db.Messages
@@ -49,7 +49,7 @@ public sealed class MarkMessagesReadCommandHandler
         // Load all unread statuses for this user up to and including the target message
         var statuses = await _db.MessageStatuses
             .Where(s => s.UserId == command.UserId)
-            .Where(s => s.Message!.ChatId  == command.ChatId)
+            .Where(s => s.Message!.ChatId == command.ChatId)
             .Where(s => s.Message!.CreatedAt <= targetMessage.CreatedAt)
             .ToListAsync(cancellationToken);
 

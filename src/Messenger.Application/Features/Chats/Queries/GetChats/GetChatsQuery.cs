@@ -11,22 +11,22 @@ public sealed record GetChatsQuery(Guid UserId) : IRequest<List<ChatSummaryDto>>
 
 /// <summary>Summary of a single chat for the chat list view.</summary>
 public sealed record ChatSummaryDto(
-    Guid              ChatId,
-    ChatType          Type,
-    int               ParticipantCount,
-    DateTime          CreatedAt,
-    string?           ChatName,
-    string?           ChatAvatarUrl,
-    bool              IsOnline,
-    int               UnreadCount,
-    LastMessageDto?   LastMessage);
+    Guid ChatId,
+    ChatType Type,
+    int ParticipantCount,
+    DateTime CreatedAt,
+    string? ChatName,
+    string? ChatAvatarUrl,
+    bool IsOnline,
+    int UnreadCount,
+    LastMessageDto? LastMessage);
 
 /// <summary>Snapshot of the most recent message in a chat.</summary>
 public sealed record LastMessageDto(
-    Guid        MessageId,
-    Guid        SenderId,
-    string      SenderFirstName,
+    Guid MessageId,
+    Guid SenderId,
+    string SenderFirstName,
     MessageType Type,
-    string?     Content,
-    string?     MediaUrl,
-    DateTime    CreatedAt);
+    string? Content,
+    string? MediaUrl,
+    DateTime CreatedAt);

@@ -6,8 +6,8 @@ namespace Messenger.Domain.Entities;
 /// </summary>
 public sealed class ChatParticipant
 {
-    public Guid     ChatId   { get; private set; }
-    public Guid     UserId   { get; private set; }
+    public Guid ChatId { get; private set; }
+    public Guid UserId { get; private set; }
     public DateTime JoinedAt { get; private set; }
 
     // Navigation properties
@@ -20,8 +20,8 @@ public sealed class ChatParticipant
     {
         return new ChatParticipant
         {
-            ChatId   = chatId,
-            UserId   = userId,
+            ChatId = chatId,
+            UserId = userId,
             JoinedAt = DateTime.UtcNow
         };
     }

@@ -16,18 +16,18 @@ public class UserDevice
     // Navigation property
     public User? User { get; private set; }
 
-    private UserDevice() 
-    { 
+    private UserDevice()
+    {
         DeviceToken = string.Empty;
     }
 
     private UserDevice(Guid userId, string deviceToken, DeviceType deviceType)
     {
-        UserId      = userId;
+        UserId = userId;
         DeviceToken = deviceToken;
-        DeviceType  = deviceType;
-        CreatedAt   = DateTime.UtcNow;
-        UpdatedAt   = DateTime.UtcNow;
+        DeviceType = deviceType;
+        CreatedAt = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public static UserDevice Create(Guid userId, string deviceToken, DeviceType deviceType)
@@ -36,6 +36,6 @@ public class UserDevice
     public void UpdateToken(string newDeviceToken)
     {
         DeviceToken = newDeviceToken;
-        UpdatedAt   = DateTime.UtcNow;
+        UpdatedAt = DateTime.UtcNow;
     }
 }

@@ -21,7 +21,7 @@ public sealed class GetChatMessagesQueryHandler
 
     public async Task<GetChatMessagesResult> Handle(
         GetChatMessagesQuery query,
-        CancellationToken    cancellationToken)
+        CancellationToken cancellationToken)
     {
         // ── Guard: user must be a participant ─────────────────────────────────
         var isMember = await _db.ChatParticipants
@@ -55,8 +55,8 @@ public sealed class GetChatMessagesQueryHandler
                 m.Id,
                 m.ChatId,
                 m.SenderId,
-                SenderFirstName  = m.Sender!.FirstName,
-                SenderAvatarUrl  = m.Sender.AvatarUrl,
+                SenderFirstName = m.Sender!.FirstName,
+                SenderAvatarUrl = m.Sender.AvatarUrl,
                 m.Type,
                 m.Content,
                 m.MediaUrl,
@@ -70,22 +70,22 @@ public sealed class GetChatMessagesQueryHandler
             })
             .ToListAsync(cancellationToken);
 
-        var hasMore    = rawMessages.Count > limit;
-        var pageItems  = hasMore ? rawMessages.Take(limit).ToList() : rawMessages;
+        var hasMore = rawMessages.Count > limit;
+        var pageItems = hasMore ? rawMessages.Take(limit).ToList() : rawMessages;
 
         var dtos = pageItems.Select(m => new MessageDto(
-            MessageId:       m.Id,
-            ChatId:          m.ChatId,
-            SenderId:        m.SenderId,
+            MessageId: m.Id,
+            ChatId: m.ChatId,
+            SenderId: m.SenderId,
             SenderFirstName: m.SenderFirstName,
             SenderAvatarUrl: m.SenderAvatarUrl,
-            Type:            m.Type,
-            Content:         m.Content,
-            MediaUrl:        m.MediaUrl,
-            Duration:        m.Duration,
+            Type: m.Type,
+            Content: m.Content,
+            MediaUrl: m.MediaUrl,
+            Duration: m.Duration,
             ReplyToMessageId: m.ReplyToMessageId,
-            CreatedAt:       m.CreatedAt,
-            MyStatus:        m.MyStatus
+            CreatedAt: m.CreatedAt,
+            MyStatus: m.MyStatus
         )).ToList();
 
         var nextCursor = hasMore

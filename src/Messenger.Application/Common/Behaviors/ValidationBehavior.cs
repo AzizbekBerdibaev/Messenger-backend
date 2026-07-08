@@ -20,9 +20,9 @@ public sealed class ValidationBehavior<TRequest, TResponse>
     }
 
     public async Task<TResponse> Handle(
-        TRequest                          request,
+        TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken                 cancellationToken)
+        CancellationToken cancellationToken)
     {
         if (!_validators.Any())
         {

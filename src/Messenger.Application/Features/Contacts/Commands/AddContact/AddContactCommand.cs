@@ -6,7 +6,7 @@ namespace Messenger.Application.Features.Contacts.Commands.AddContact;
 /// Command: Adds a user to the current user's address book.
 /// </summary>
 public sealed record AddContactCommand(
-    Guid    UserId,
-    string  PhoneNumber,
-    string  FirstName,
+    Guid UserId,
+    string PhoneNumber,
+    string FirstName,
     string? LastName) : IRequest<Guid>;

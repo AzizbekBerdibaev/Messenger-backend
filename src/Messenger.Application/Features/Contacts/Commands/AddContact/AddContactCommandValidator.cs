@@ -9,7 +9,7 @@ public sealed class AddContactCommandValidator : AbstractValidator<AddContactCom
     public AddContactCommandValidator()
     {
         RuleFor(x => x.UserId).NotEmpty();
-        
+
         RuleFor(x => x.PhoneNumber)
             .NotEmpty()
             .Matches(E164Pattern)

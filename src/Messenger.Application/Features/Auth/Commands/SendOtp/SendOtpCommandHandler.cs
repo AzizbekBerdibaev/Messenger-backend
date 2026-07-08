@@ -12,18 +12,18 @@ public sealed class SendOtpCommandHandler : IRequestHandler<SendOtpCommand, Unit
 {
     private static readonly TimeSpan OtpTtl = TimeSpan.FromMinutes(5);
 
-    private readonly IOtpService                     _otpService;
-    private readonly ISmsService                     _smsService;
-    private readonly ILogger<SendOtpCommandHandler>  _logger;
+    private readonly IOtpService _otpService;
+    private readonly ISmsService _smsService;
+    private readonly ILogger<SendOtpCommandHandler> _logger;
 
     public SendOtpCommandHandler(
-        IOtpService                    otpService,
-        ISmsService                    smsService,
+        IOtpService otpService,
+        ISmsService smsService,
         ILogger<SendOtpCommandHandler> logger)
     {
         _otpService = otpService;
         _smsService = smsService;
-        _logger     = logger;
+        _logger = logger;
     }
 
     public async Task<Unit> Handle(SendOtpCommand request, CancellationToken cancellationToken)

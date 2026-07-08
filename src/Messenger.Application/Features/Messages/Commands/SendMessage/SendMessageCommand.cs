@@ -9,22 +9,22 @@ namespace Messenger.Application.Features.Messages.Commands.SendMessage;
 /// After persisting, fires <c>MessageSentNotification</c> for SignalR delivery.
 /// </summary>
 public sealed record SendMessageCommand(
-    Guid         ChatId,
-    Guid         SenderId,
-    MessageType  Type,
-    string?      Content,
-    string?      MediaUrl,
-    int?         Duration,
-    Guid?        ReplyToMessageId) : IRequest<SendMessageResult>;
+    Guid ChatId,
+    Guid SenderId,
+    MessageType Type,
+    string? Content,
+    string? MediaUrl,
+    int? Duration,
+    Guid? ReplyToMessageId) : IRequest<SendMessageResult>;
 
 /// <summary>Result returned after the message is persisted.</summary>
 public sealed record SendMessageResult(
-    Guid        MessageId,
-    Guid        ChatId,
-    Guid        SenderId,
+    Guid MessageId,
+    Guid ChatId,
+    Guid SenderId,
     MessageType Type,
-    string?     Content,
-    string?     MediaUrl,
-    int?        Duration,
-    Guid?       ReplyToMessageId,
-    DateTime    CreatedAt);
+    string? Content,
+    string? MediaUrl,
+    int? Duration,
+    Guid? ReplyToMessageId,
+    DateTime CreatedAt);

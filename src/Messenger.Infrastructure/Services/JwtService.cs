@@ -12,23 +12,23 @@ namespace Messenger.Infrastructure.Services;
 /// </summary>
 public sealed class JwtService : IJwtService
 {
-    private readonly JwtSettings           _settings;
+    private readonly JwtSettings _settings;
     private readonly JwtSecurityTokenHandler _handler;
-    private readonly SymmetricSecurityKey   _signingKey;
+    private readonly SymmetricSecurityKey _signingKey;
 
     public JwtService(IOptions<JwtSettings> settings)
     {
-        _settings   = settings.Value;
-        _handler    = new JwtSecurityTokenHandler();
+        _settings = settings.Value;
+        _handler = new JwtSecurityTokenHandler();
         _signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Secret));
     }
 
     /// <inheritdoc/>
     public TokenPair GenerateTokenPair(Guid userId, string phoneNumber)
     {
-        var now              = DateTime.UtcNow;
-        var accessExpiry     = now.AddMinutes(_settings.AccessTokenExpirationMinutes);
-        var refreshExpiry    = now.AddDays(_settings.RefreshTokenExpirationDays);
+        var now = DateTime.UtcNow;
+        var accessExpiry = now.AddMinutes(_settings.AccessTokenExpirationMinutes);
+        var refreshExpiry = now.AddDays(_settings.RefreshTokenExpirationDays);
         var signingCredentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
 
         // ── Access Token ────────────────────────────────────────────────────────
@@ -42,11 +42,11 @@ public sealed class JwtService : IJwtService
 
         var accessDescriptor = new SecurityTokenDescriptor
         {
-            Subject            = new ClaimsIdentity(accessClaims),
-            Issuer             = _settings.Issuer,
-            Audience           = _settings.Audience,
-            Expires            = accessExpiry,
-            NotBefore          = now,
+            Subject = new ClaimsIdentity(accessClaims),
+            Issuer = _settings.Issuer,
+            Audience = _settings.Audience,
+            Expires = accessExpiry,
+            NotBefore = now,
             SigningCredentials = signingCredentials
         };
 
@@ -62,11 +62,11 @@ public sealed class JwtService : IJwtService
 
         var refreshDescriptor = new SecurityTokenDescriptor
         {
-            Subject            = new ClaimsIdentity(refreshClaims),
-            Issuer             = _settings.Issuer,
-            Audience           = _settings.Audience,
-            Expires            = refreshExpiry,
-            NotBefore          = now,
+            Subject = new ClaimsIdentity(refreshClaims),
+            Issuer = _settings.Issuer,
+            Audience = _settings.Audience,
+            Expires = refreshExpiry,
+            NotBefore = now,
             SigningCredentials = signingCredentials
         };
 
@@ -81,13 +81,13 @@ public sealed class JwtService : IJwtService
         var validationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey         = _signingKey,
-            ValidateIssuer           = true,
-            ValidIssuer              = _settings.Issuer,
-            ValidateAudience         = true,
-            ValidAudience            = _settings.Audience,
-            ValidateLifetime         = true,
-            ClockSkew                = TimeSpan.Zero
+            IssuerSigningKey = _signingKey,
+            ValidateIssuer = true,
+            ValidIssuer = _settings.Issuer,
+            ValidateAudience = true,
+            ValidAudience = _settings.Audience,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
         };
 
         try

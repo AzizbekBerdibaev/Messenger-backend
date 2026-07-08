@@ -36,12 +36,12 @@ public sealed class MessagesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> SendMessage(
-        Guid                   chatId,
+        Guid chatId,
         [FromBody] SendMessageRequest request,
-        CancellationToken      ct)
+        CancellationToken ct)
     {
         var senderId = GetCurrentUserId();
-        var result   = await _sender.Send(
+        var result = await _sender.Send(
             new SendMessageCommand(
                 chatId,
                 senderId,
@@ -53,15 +53,15 @@ public sealed class MessagesController : ControllerBase
             ct);
 
         return StatusCode(StatusCodes.Status201Created, new SendMessageResponse(
-            MessageId:        result.MessageId,
-            ChatId:           result.ChatId,
-            SenderId:         result.SenderId,
-            Type:             result.Type,
-            Content:          result.Content,
-            MediaUrl:         result.MediaUrl,
-            Duration:         result.Duration,
+            MessageId: result.MessageId,
+            ChatId: result.ChatId,
+            SenderId: result.SenderId,
+            Type: result.Type,
+            Content: result.Content,
+            MediaUrl: result.MediaUrl,
+            Duration: result.Duration,
             ReplyToMessageId: result.ReplyToMessageId,
-            CreatedAt:        result.CreatedAt));
+            CreatedAt: result.CreatedAt));
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -77,9 +77,9 @@ public sealed class MessagesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> MarkRead(
-        Guid                       chatId,
+        Guid chatId,
         [FromBody] MarkReadRequest request,
-        CancellationToken          ct)
+        CancellationToken ct)
     {
         var userId = GetCurrentUserId();
         await _sender.Send(
@@ -124,20 +124,20 @@ public sealed class MessagesController : ControllerBase
 
 public sealed record SendMessageRequest(
     MessageType Type,
-    string?     Content,
-    string?     MediaUrl,
-    int?        Duration,
-    Guid?       ReplyToMessageId);
+    string? Content,
+    string? MediaUrl,
+    int? Duration,
+    Guid? ReplyToMessageId);
 
 public sealed record SendMessageResponse(
-    Guid        MessageId,
-    Guid        ChatId,
-    Guid        SenderId,
+    Guid MessageId,
+    Guid ChatId,
+    Guid SenderId,
     MessageType Type,
-    string?     Content,
-    string?     MediaUrl,
-    int?        Duration,
-    Guid?       ReplyToMessageId,
-    DateTime    CreatedAt);
+    string? Content,
+    string? MediaUrl,
+    int? Duration,
+    Guid? ReplyToMessageId,
+    DateTime CreatedAt);
 
 public sealed record MarkReadRequest(Guid UpToMessageId);

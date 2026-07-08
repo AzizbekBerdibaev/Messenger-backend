@@ -15,7 +15,7 @@ public sealed class DummyStorageService : IStorageService
     public Task<string> GeneratePreSignedUploadUrlAsync(string fileName, string contentType, TimeSpan expiration)
     {
         _logger.LogInformation("Generating pre-signed URL for {FileName} with content type {ContentType}", fileName, contentType);
-        
+
         // This is a dummy URL for development purposes
         return Task.FromResult($"https://dummy-storage.local/upload?file={fileName}");
     }

@@ -18,19 +18,19 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
     }
 
     public async ValueTask<bool> TryHandleAsync(
-        HttpContext      httpContext,
-        Exception        exception,
+        HttpContext httpContext,
+        Exception exception,
         CancellationToken cancellationToken)
     {
         _logger.LogError(exception, "Unhandled exception: {Message}", exception.Message);
 
         var (statusCode, title) = exception switch
         {
-            ValidationException          => (StatusCodes.Status400BadRequest,          "Validation Failed"),
-            UnauthorizedAccessException  => (StatusCodes.Status401Unauthorized,        "Unauthorized"),
-            KeyNotFoundException         => (StatusCodes.Status404NotFound,            "Not Found"),
-            InvalidOperationException    => (StatusCodes.Status409Conflict,            "Conflict"),
-            _                            => (StatusCodes.Status500InternalServerError, "Internal Server Error")
+            ValidationException => (StatusCodes.Status400BadRequest, "Validation Failed"),
+            UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "Unauthorized"),
+            KeyNotFoundException => (StatusCodes.Status404NotFound, "Not Found"),
+            InvalidOperationException => (StatusCodes.Status409Conflict, "Conflict"),
+            _ => (StatusCodes.Status500InternalServerError, "Internal Server Error")
         };
 
         ProblemDetails problem;
@@ -47,7 +47,7 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
             var validationProblem = new HttpValidationProblemDetails(errors)
             {
                 Status = statusCode,
-                Title  = title
+                Title = title
             };
             problem = validationProblem;
         }
@@ -56,7 +56,7 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
             problem = new ProblemDetails
             {
                 Status = statusCode,
-                Title  = title,
+                Title = title,
                 Detail = exception.Message
             };
         }

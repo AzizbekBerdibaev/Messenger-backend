@@ -21,7 +21,7 @@ public sealed class GetActiveStoriesQueryHandler
 
     public async Task<List<ActiveStoryDto>> Handle(
         GetActiveStoriesQuery query,
-        CancellationToken     cancellationToken)
+        CancellationToken cancellationToken)
     {
         var now = DateTime.UtcNow;
 

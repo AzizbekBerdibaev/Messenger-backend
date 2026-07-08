@@ -6,19 +6,19 @@ namespace Messenger.Domain.Entities;
 /// </summary>
 public sealed class User
 {
-    public Guid   Id          { get; private set; }
+    public Guid Id { get; private set; }
     public string PhoneNumber { get; private set; } = string.Empty;
-    public string FirstName   { get; private set; } = string.Empty;
-    public string? LastName   { get; private set; }
-    public string? AvatarUrl  { get; private set; }
+    public string FirstName { get; private set; } = string.Empty;
+    public string? LastName { get; private set; }
+    public string? AvatarUrl { get; private set; }
     public DateTime LastSeenAt { get; private set; }
-    public DateTime CreatedAt  { get; private set; }
+    public DateTime CreatedAt { get; private set; }
 
     // Navigation properties (EF Core)
     public ICollection<ChatParticipant> ChatParticipants { get; private set; } = [];
-    public ICollection<Message>         SentMessages     { get; private set; } = [];
-    public ICollection<MessageStatus>   MessageStatuses  { get; private set; } = [];
-    public ICollection<Story>           Stories          { get; private set; } = [];
+    public ICollection<Message> SentMessages { get; private set; } = [];
+    public ICollection<MessageStatus> MessageStatuses { get; private set; } = [];
+    public ICollection<Story> Stories { get; private set; } = [];
 
     /// <summary>EF Core constructor — do not use directly in application code.</summary>
     private User() { }
@@ -30,11 +30,11 @@ public sealed class User
 
         return new User
         {
-            Id          = id,
+            Id = id,
             PhoneNumber = phoneNumber,
-            FirstName   = string.Empty,
-            LastSeenAt  = DateTime.UtcNow,
-            CreatedAt   = DateTime.UtcNow
+            FirstName = string.Empty,
+            LastSeenAt = DateTime.UtcNow,
+            CreatedAt = DateTime.UtcNow
         };
     }
 
@@ -42,9 +42,9 @@ public sealed class User
     public void UpdateProfile(string firstName, string? lastName, string? avatarUrl)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(firstName);
-        FirstName  = firstName;
-        LastName   = lastName;
-        AvatarUrl  = avatarUrl;
+        FirstName = firstName;
+        LastName = lastName;
+        AvatarUrl = avatarUrl;
     }
 
     /// <summary>Refreshes the last-seen timestamp (called on every authenticated request).</summary>

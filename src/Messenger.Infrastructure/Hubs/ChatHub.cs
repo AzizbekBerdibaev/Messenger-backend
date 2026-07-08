@@ -17,11 +17,11 @@ namespace Messenger.Infrastructure.Hubs;
 public sealed class ChatHub : Hub<IChatHubClient>
 {
     private readonly IApplicationDbContext _db;
-    private readonly ILogger<ChatHub>      _logger;
+    private readonly ILogger<ChatHub> _logger;
 
     public ChatHub(IApplicationDbContext db, ILogger<ChatHub> logger)
     {
-        _db     = db;
+        _db = db;
         _logger = logger;
     }
 

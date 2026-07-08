@@ -11,7 +11,7 @@ public sealed record VerifyOtpCommand(string PhoneNumber, string Code) : IReques
 
 /// <summary>Result returned on successful OTP verification.</summary>
 public sealed record VerifyOtpResult(
-    Guid        UserId,
-    string      PhoneNumber,
-    bool        IsNewUser,
-    TokenPair   Tokens);
+    Guid UserId,
+    string PhoneNumber,
+    bool IsNewUser,
+    TokenPair Tokens);

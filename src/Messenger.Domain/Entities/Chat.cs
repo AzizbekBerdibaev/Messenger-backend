@@ -8,13 +8,13 @@ namespace Messenger.Domain.Entities;
 /// </summary>
 public sealed class Chat
 {
-    public Guid     Id        { get; private set; }
-    public ChatType Type      { get; private set; }
+    public Guid Id { get; private set; }
+    public ChatType Type { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     // Navigation properties
     public ICollection<ChatParticipant> Participants { get; private set; } = [];
-    public ICollection<Message>         Messages     { get; private set; } = [];
+    public ICollection<Message> Messages { get; private set; } = [];
 
     private Chat() { }
 
@@ -22,8 +22,8 @@ public sealed class Chat
     {
         return new Chat
         {
-            Id        = Guid.NewGuid(),
-            Type      = ChatType.Private,
+            Id = Guid.NewGuid(),
+            Type = ChatType.Private,
             CreatedAt = DateTime.UtcNow
         };
     }
@@ -32,8 +32,8 @@ public sealed class Chat
     {
         return new Chat
         {
-            Id        = Guid.NewGuid(),
-            Type      = ChatType.Group,
+            Id = Guid.NewGuid(),
+            Type = ChatType.Group,
             CreatedAt = DateTime.UtcNow
         };
     }

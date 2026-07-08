@@ -28,9 +28,9 @@ public sealed class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileC
         await _db.SaveChangesAsync(cancellationToken);
 
         return new UpdateProfileResult(
-            UserId:    user.Id,
+            UserId: user.Id,
             FirstName: user.FirstName,
-            LastName:  user.LastName,
+            LastName: user.LastName,
             AvatarUrl: user.AvatarUrl);
     }
 }

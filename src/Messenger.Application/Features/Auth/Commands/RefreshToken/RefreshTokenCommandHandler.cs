@@ -11,13 +11,13 @@ namespace Messenger.Application.Features.Auth.Commands.RefreshToken;
 /// </summary>
 public sealed class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, RefreshTokenResult>
 {
-    private readonly IJwtService          _jwtService;
+    private readonly IJwtService _jwtService;
     private readonly IApplicationDbContext _db;
 
     public RefreshTokenCommandHandler(IJwtService jwtService, IApplicationDbContext db)
     {
         _jwtService = jwtService;
-        _db         = db;
+        _db = db;
     }
 
     public async Task<RefreshTokenResult> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
@@ -35,8 +35,8 @@ public sealed class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCom
         var tokens = _jwtService.GenerateTokenPair(user.Id, user.PhoneNumber);
 
         return new RefreshTokenResult(
-            AccessToken:          tokens.AccessToken,
-            RefreshToken:         tokens.RefreshToken,
+            AccessToken: tokens.AccessToken,
+            RefreshToken: tokens.RefreshToken,
             AccessTokenExpiresAt: tokens.AccessTokenExpiresAt);
     }
 }

@@ -19,7 +19,7 @@ public sealed class GenerateUploadUrlCommandHandler
     {
         // Generate a unique file key to prevent overwriting
         var extension = Path.GetExtension(request.FileName);
-        var fileKey   = $"{Guid.NewGuid()}{extension}";
+        var fileKey = $"{Guid.NewGuid()}{extension}";
 
         var url = await _storageService.GeneratePreSignedUploadUrlAsync(
             fileKey,

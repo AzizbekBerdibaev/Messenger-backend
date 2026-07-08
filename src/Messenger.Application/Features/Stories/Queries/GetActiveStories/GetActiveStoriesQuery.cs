@@ -10,10 +10,10 @@ public sealed record GetActiveStoriesQuery(Guid UserId) : IRequest<List<ActiveSt
 
 /// <summary>DTO representing an active story with author metadata.</summary>
 public sealed record ActiveStoryDto(
-    Guid     StoryId,
-    Guid     AuthorId,
-    string   AuthorFirstName,
-    string?  AuthorAvatarUrl,
-    string   MediaUrl,
+    Guid StoryId,
+    Guid AuthorId,
+    string AuthorFirstName,
+    string? AuthorAvatarUrl,
+    string MediaUrl,
     DateTime CreatedAt,
     DateTime ExpiresAt);

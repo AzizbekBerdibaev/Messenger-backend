@@ -12,20 +12,20 @@ namespace Messenger.Application.Features.Stories.Commands.PublishStory;
 public sealed class PublishStoryCommandHandler
     : IRequestHandler<PublishStoryCommand, StoryDto>
 {
-    private readonly IApplicationDbContext           _db;
+    private readonly IApplicationDbContext _db;
     private readonly ILogger<PublishStoryCommandHandler> _logger;
 
     public PublishStoryCommandHandler(
-        IApplicationDbContext            db,
+        IApplicationDbContext db,
         ILogger<PublishStoryCommandHandler> logger)
     {
-        _db     = db;
+        _db = db;
         _logger = logger;
     }
 
     public async Task<StoryDto> Handle(
         PublishStoryCommand command,
-        CancellationToken   cancellationToken)
+        CancellationToken cancellationToken)
     {
         var story = Story.Create(command.UserId, command.MediaUrl);
         _db.Stories.Add(story);
@@ -36,9 +36,9 @@ public sealed class PublishStoryCommandHandler
             command.UserId, story.Id, story.ExpiresAt);
 
         return new StoryDto(
-            StoryId:   story.Id,
-            UserId:    story.UserId,
-            MediaUrl:  story.MediaUrl,
+            StoryId: story.Id,
+            UserId: story.UserId,
+            MediaUrl: story.MediaUrl,
             CreatedAt: story.CreatedAt,
             ExpiresAt: story.ExpiresAt);
     }

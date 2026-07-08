@@ -10,6 +10,6 @@ public sealed record RefreshTokenCommand(string RefreshToken) : IRequest<Refresh
 
 /// <summary>Result containing the new token pair.</summary>
 public sealed record RefreshTokenResult(
-    string  AccessToken,
-    string  RefreshToken,
+    string AccessToken,
+    string RefreshToken,
     DateTime AccessTokenExpiresAt);

@@ -7,10 +7,10 @@ public class BlockedUser
 {
     /// <summary>The user who initiated the block.</summary>
     public Guid UserId { get; private set; }
-    
+
     /// <summary>The user who is blocked.</summary>
     public Guid BlockedUserId { get; private set; }
-    
+
     public DateTime CreatedAt { get; private set; }
 
     // Navigation properties
@@ -21,9 +21,9 @@ public class BlockedUser
 
     private BlockedUser(Guid userId, Guid blockedUserId)
     {
-        UserId        = userId;
+        UserId = userId;
         BlockedUserId = blockedUserId;
-        CreatedAt     = DateTime.UtcNow;
+        CreatedAt = DateTime.UtcNow;
     }
 
     public static BlockedUser Create(Guid userId, Guid blockedUserId)

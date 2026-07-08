@@ -8,14 +8,14 @@ namespace Messenger.Domain.Entities;
 /// </summary>
 public sealed class MessageStatus
 {
-    public Guid           MessageId { get; private set; }
-    public Guid           UserId    { get; private set; }
-    public DeliveryStatus Status    { get; private set; }
-    public DateTime       UpdatedAt { get; private set; }
+    public Guid MessageId { get; private set; }
+    public Guid UserId { get; private set; }
+    public DeliveryStatus Status { get; private set; }
+    public DateTime UpdatedAt { get; private set; }
 
     // Navigation properties
     public Message? Message { get; private set; }
-    public User?    User    { get; private set; }
+    public User? User { get; private set; }
 
     private MessageStatus() { }
 
@@ -24,8 +24,8 @@ public sealed class MessageStatus
         return new MessageStatus
         {
             MessageId = messageId,
-            UserId    = userId,
-            Status    = DeliveryStatus.Sent,
+            UserId = userId,
+            Status = DeliveryStatus.Sent,
             UpdatedAt = DateTime.UtcNow
         };
     }
@@ -35,7 +35,7 @@ public sealed class MessageStatus
     {
         if (Status < DeliveryStatus.Delivered)
         {
-            Status    = DeliveryStatus.Delivered;
+            Status = DeliveryStatus.Delivered;
             UpdatedAt = DateTime.UtcNow;
         }
     }
@@ -45,7 +45,7 @@ public sealed class MessageStatus
     {
         if (Status < DeliveryStatus.Read)
         {
-            Status    = DeliveryStatus.Read;
+            Status = DeliveryStatus.Read;
             UpdatedAt = DateTime.UtcNow;
         }
     }

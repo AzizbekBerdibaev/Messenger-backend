@@ -50,11 +50,11 @@ public sealed class AuthController : ControllerBase
         var result = await _sender.Send(new VerifyOtpCommand(request.PhoneNumber, request.Code), ct);
 
         return Ok(new VerifyOtpResponse(
-            UserId:               result.UserId,
-            PhoneNumber:          result.PhoneNumber,
-            IsNewUser:            result.IsNewUser,
-            AccessToken:          result.Tokens.AccessToken,
-            RefreshToken:         result.Tokens.RefreshToken,
+            UserId: result.UserId,
+            PhoneNumber: result.PhoneNumber,
+            IsNewUser: result.IsNewUser,
+            AccessToken: result.Tokens.AccessToken,
+            RefreshToken: result.Tokens.RefreshToken,
             AccessTokenExpiresAt: result.Tokens.AccessTokenExpiresAt));
     }
 
@@ -71,8 +71,8 @@ public sealed class AuthController : ControllerBase
         var result = await _sender.Send(new RefreshTokenCommand(request.RefreshToken), ct);
 
         return Ok(new RefreshTokenResponse(
-            AccessToken:          result.AccessToken,
-            RefreshToken:         result.RefreshToken,
+            AccessToken: result.AccessToken,
+            RefreshToken: result.RefreshToken,
             AccessTokenExpiresAt: result.AccessTokenExpiresAt));
     }
 }
@@ -84,16 +84,16 @@ public sealed record SendOtpRequest(string PhoneNumber);
 public sealed record VerifyOtpRequest(string PhoneNumber, string Code);
 
 public sealed record VerifyOtpResponse(
-    Guid     UserId,
-    string   PhoneNumber,
-    bool     IsNewUser,
-    string   AccessToken,
-    string   RefreshToken,
+    Guid UserId,
+    string PhoneNumber,
+    bool IsNewUser,
+    string AccessToken,
+    string RefreshToken,
     DateTime AccessTokenExpiresAt);
 
 public sealed record RefreshTokenRequest(string RefreshToken);
 
 public sealed record RefreshTokenResponse(
-    string   AccessToken,
-    string   RefreshToken,
+    string AccessToken,
+    string RefreshToken,
     DateTime AccessTokenExpiresAt);

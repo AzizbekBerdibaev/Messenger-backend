@@ -30,16 +30,16 @@ public interface IChatHubClient
 
 /// <summary>Payload sent to clients when a new message arrives.</summary>
 public sealed record ChatHubMessageDto(
-    Guid        MessageId,
-    Guid        ChatId,
-    Guid        SenderId,
-    string      SenderFirstName,
-    string?     SenderAvatarUrl,
+    Guid MessageId,
+    Guid ChatId,
+    Guid SenderId,
+    string SenderFirstName,
+    string? SenderAvatarUrl,
     MessageType Type,
-    string?     Content,
-    string?     MediaUrl,
-    Guid?       ReplyToMessageId,
-    DateTime    CreatedAt);
+    string? Content,
+    string? MediaUrl,
+    Guid? ReplyToMessageId,
+    DateTime CreatedAt);
 
 /// <summary>Payload sent to clients when messages are marked as read.</summary>
 public sealed record ChatHubReadReceiptDto(

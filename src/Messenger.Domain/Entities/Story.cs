@@ -6,9 +6,9 @@ namespace Messenger.Domain.Entities;
 /// </summary>
 public sealed class Story
 {
-    public Guid     Id        { get; private set; }
-    public Guid     UserId    { get; private set; }
-    public string   MediaUrl  { get; private set; } = string.Empty;
+    public Guid Id { get; private set; }
+    public Guid UserId { get; private set; }
+    public string MediaUrl { get; private set; } = string.Empty;
     public DateTime CreatedAt { get; private set; }
     public DateTime ExpiresAt { get; private set; }
 
@@ -23,9 +23,9 @@ public sealed class Story
         var now = DateTime.UtcNow;
         return new Story
         {
-            Id        = Guid.NewGuid(),
-            UserId    = userId,
-            MediaUrl  = mediaUrl,
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            MediaUrl = mediaUrl,
             CreatedAt = now,
             ExpiresAt = now.Add(lifetime ?? TimeSpan.FromHours(24))
         };

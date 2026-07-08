@@ -18,7 +18,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(
         this IServiceCollection services,
-        IConfiguration          configuration)
+        IConfiguration configuration)
     {
         // ── PostgreSQL / EF Core ────────────────────────────────────────────────
         var connectionString = configuration.GetConnectionString("DefaultConnection")
@@ -62,5 +62,16 @@ public static class DependencyInjection
             cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
 
         return services;
+    }
+
+    /// <summary>
+    /// Applies pending EF Core migrations to the database.
+    /// Keeps ApplicationDbContext encapsulated inside the Infrastructure layer.
+    /// </summary>
+    public static void InitializeDatabase(this IServiceProvider provider)
+    {
+        using var scope = provider.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        db.Database.Migrate();
     }
 }

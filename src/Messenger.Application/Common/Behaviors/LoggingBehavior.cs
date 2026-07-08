@@ -22,9 +22,9 @@ public sealed class LoggingBehavior<TRequest, TResponse>
     }
 
     public async Task<TResponse> Handle(
-        TRequest                          request,
+        TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken                 cancellationToken)
+        CancellationToken cancellationToken)
     {
         var requestName = typeof(TRequest).Name;
         _logger.LogInformation("Handling {RequestName}", requestName);

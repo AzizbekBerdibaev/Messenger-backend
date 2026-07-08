@@ -17,20 +17,20 @@ namespace Messenger.Application.Features.Chats.Commands.CreatePrivateChat;
 public sealed class CreatePrivateChatCommandHandler
     : IRequestHandler<CreatePrivateChatCommand, CreatePrivateChatResult>
 {
-    private readonly IApplicationDbContext              _db;
+    private readonly IApplicationDbContext _db;
     private readonly ILogger<CreatePrivateChatCommandHandler> _logger;
 
     public CreatePrivateChatCommandHandler(
-        IApplicationDbContext                   db,
+        IApplicationDbContext db,
         ILogger<CreatePrivateChatCommandHandler> logger)
     {
-        _db     = db;
+        _db = db;
         _logger = logger;
     }
 
     public async Task<CreatePrivateChatResult> Handle(
         CreatePrivateChatCommand command,
-        CancellationToken        cancellationToken)
+        CancellationToken cancellationToken)
     {
         // ── Step 1: Check for existing private chat ───────────────────────────
         var existingChat = await _db.Chats
@@ -46,9 +46,9 @@ public sealed class CreatePrivateChatCommandHandler
                 existingChat.Id, command.CurrentUserId, command.OtherUserId);
 
             return new CreatePrivateChatResult(
-                ChatId:        existingChat.Id,
+                ChatId: existingChat.Id,
                 AlreadyExisted: true,
-                CreatedAt:     existingChat.CreatedAt);
+                CreatedAt: existingChat.CreatedAt);
         }
 
         // ── Step 2: Verify both users exist ───────────────────────────────────
@@ -72,8 +72,8 @@ public sealed class CreatePrivateChatCommandHandler
             chat.Id, command.CurrentUserId, command.OtherUserId);
 
         return new CreatePrivateChatResult(
-            ChatId:        chat.Id,
+            ChatId: chat.Id,
             AlreadyExisted: false,
-            CreatedAt:     chat.CreatedAt);
+            CreatedAt: chat.CreatedAt);
     }
 }

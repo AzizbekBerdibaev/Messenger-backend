@@ -40,7 +40,7 @@ public sealed class AddContactCommandHandler : IRequestHandler<AddContactCommand
         }
 
         var contact = Contact.Create(request.UserId, targetUser.Id, request.FirstName, request.LastName);
-        
+
         _db.Contacts.Add(contact);
         await _db.SaveChangesAsync(cancellationToken);
 

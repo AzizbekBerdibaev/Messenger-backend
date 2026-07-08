@@ -21,7 +21,7 @@ public sealed class GetChatsQueryHandler
     }
 
     public async Task<List<ChatSummaryDto>> Handle(
-        GetChatsQuery     query,
+        GetChatsQuery query,
         CancellationToken cancellationToken)
     {
         var now = DateTime.UtcNow;
@@ -35,7 +35,7 @@ public sealed class GetChatsQueryHandler
                 c.Type,
                 c.CreatedAt,
                 ParticipantCount = c.Participants.Count,
-                
+
                 // For private chats, get the OTHER participant
                 OtherParticipant = c.Type == ChatType.Private
                     ? c.Participants
@@ -73,7 +73,7 @@ public sealed class GetChatsQueryHandler
                 : c.CreatedAt)
             .ToListAsync(cancellationToken);
 
-        return chats.Select(c => 
+        return chats.Select(c =>
         {
             // Determine Chat Name, Avatar and Online Status based on chat type
             string? chatName = null;
@@ -85,29 +85,29 @@ public sealed class GetChatsQueryHandler
                 chatName = string.IsNullOrWhiteSpace(c.OtherParticipant.LastName)
                     ? c.OtherParticipant.FirstName
                     : $"{c.OtherParticipant.FirstName} {c.OtherParticipant.LastName}";
-                
+
                 chatAvatar = c.OtherParticipant.AvatarUrl;
                 isOnline = (now - c.OtherParticipant.LastSeenAt).TotalMinutes < 5;
             }
             // For group chats, could be set here if groups had names/avatars
 
             return new ChatSummaryDto(
-                ChatId:           c.Id,
-                Type:             c.Type,
+                ChatId: c.Id,
+                Type: c.Type,
                 ParticipantCount: c.ParticipantCount,
-                CreatedAt:        c.CreatedAt,
-                ChatName:         chatName,
-                ChatAvatarUrl:    chatAvatar,
-                IsOnline:         isOnline,
-                UnreadCount:      c.UnreadCount,
+                CreatedAt: c.CreatedAt,
+                ChatName: chatName,
+                ChatAvatarUrl: chatAvatar,
+                IsOnline: isOnline,
+                UnreadCount: c.UnreadCount,
                 LastMessage: c.LastMessage is null ? null : new LastMessageDto(
-                    MessageId:       c.LastMessage.Id,
-                    SenderId:        c.LastMessage.SenderId,
+                    MessageId: c.LastMessage.Id,
+                    SenderId: c.LastMessage.SenderId,
                     SenderFirstName: c.LastMessage.SenderFirstName,
-                    Type:            c.LastMessage.Type,
-                    Content:         c.LastMessage.Content,
-                    MediaUrl:        c.LastMessage.MediaUrl,
-                    CreatedAt:       c.LastMessage.CreatedAt)
+                    Type: c.LastMessage.Type,
+                    Content: c.LastMessage.Content,
+                    MediaUrl: c.LastMessage.MediaUrl,
+                    CreatedAt: c.LastMessage.CreatedAt)
             );
         }).ToList();
     }

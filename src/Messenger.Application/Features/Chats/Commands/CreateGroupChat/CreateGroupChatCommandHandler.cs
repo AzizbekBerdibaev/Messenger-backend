@@ -13,20 +13,20 @@ namespace Messenger.Application.Features.Chats.Commands.CreateGroupChat;
 public sealed class CreateGroupChatCommandHandler
     : IRequestHandler<CreateGroupChatCommand, CreateGroupChatResult>
 {
-    private readonly IApplicationDbContext             _db;
+    private readonly IApplicationDbContext _db;
     private readonly ILogger<CreateGroupChatCommandHandler> _logger;
 
     public CreateGroupChatCommandHandler(
-        IApplicationDbContext              db,
+        IApplicationDbContext db,
         ILogger<CreateGroupChatCommandHandler> logger)
     {
-        _db     = db;
+        _db = db;
         _logger = logger;
     }
 
     public async Task<CreateGroupChatResult> Handle(
         CreateGroupChatCommand command,
-        CancellationToken      cancellationToken)
+        CancellationToken cancellationToken)
     {
         // Deduplicate participants and always include the creator
         var allParticipantIds = command.ParticipantIds
@@ -60,8 +60,8 @@ public sealed class CreateGroupChatCommandHandler
             chat.Id, allParticipantIds.Count, command.CreatorId);
 
         return new CreateGroupChatResult(
-            ChatId:           chat.Id,
-            CreatedAt:        chat.CreatedAt,
+            ChatId: chat.Id,
+            CreatedAt: chat.CreatedAt,
             ParticipantCount: allParticipantIds.Count);
     }
 }

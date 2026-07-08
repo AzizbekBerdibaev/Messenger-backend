@@ -5,15 +5,15 @@ namespace Messenger.Domain.Entities;
 /// </summary>
 public sealed class Contact
 {
-    public Guid   UserId          { get; private set; }
-    public Guid   ContactUserId   { get; private set; }
-    public string FirstName       { get; private set; } = string.Empty;
-    public string? LastName       { get; private set; }
-    public DateTime CreatedAt     { get; private set; }
+    public Guid UserId { get; private set; }
+    public Guid ContactUserId { get; private set; }
+    public string FirstName { get; private set; } = string.Empty;
+    public string? LastName { get; private set; }
+    public DateTime CreatedAt { get; private set; }
 
     // Navigation properties
-    public User? User             { get; private set; }
-    public User? ContactUser      { get; private set; }
+    public User? User { get; private set; }
+    public User? ContactUser { get; private set; }
 
     private Contact() { }
 
@@ -23,11 +23,11 @@ public sealed class Contact
 
         return new Contact
         {
-            UserId        = userId,
+            UserId = userId,
             ContactUserId = contactUserId,
-            FirstName     = firstName,
-            LastName      = lastName,
-            CreatedAt     = DateTime.UtcNow
+            FirstName = firstName,
+            LastName = lastName,
+            CreatedAt = DateTime.UtcNow
         };
     }
 }

@@ -1,5 +1,4 @@
 using System.Text;
-using Microsoft.EntityFrameworkCore;
 using Messenger.Application;
 using Messenger.Infrastructure;
 using Messenger.Infrastructure.Hubs;
@@ -32,27 +31,27 @@ try
 
     // ── JWT Authentication ─────────────────────────────────────────────────
     var jwtSection = builder.Configuration.GetSection("JwtSettings");
-    var secret     = jwtSection["Secret"]
+    var secret = jwtSection["Secret"]
         ?? throw new InvalidOperationException("JwtSettings:Secret is not configured.");
 
     builder.Services
         .AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme    = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         })
         .AddJwtBearer(options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey         = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
-                ValidateIssuer           = true,
-                ValidIssuer              = jwtSection["Issuer"],
-                ValidateAudience         = true,
-                ValidAudience            = jwtSection["Audience"],
-                ValidateLifetime         = true,
-                ClockSkew                = TimeSpan.Zero
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+                ValidateIssuer = true,
+                ValidIssuer = jwtSection["Issuer"],
+                ValidateAudience = true,
+                ValidAudience = jwtSection["Audience"],
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
             };
 
             // Allow SignalR hubs to receive the token via query string
@@ -61,7 +60,7 @@ try
                 OnMessageReceived = context =>
                 {
                     var accessToken = context.Request.Query["access_token"];
-                    var path        = context.HttpContext.Request.Path;
+                    var path = context.HttpContext.Request.Path;
 
                     if (!string.IsNullOrEmpty(accessToken) &&
                         path.StartsWithSegments("/hubs"))
@@ -88,7 +87,7 @@ try
     {
         options.SwaggerDoc("v1", new OpenApiInfo
         {
-            Title   = "Messenger API",
+            Title = "Messenger API",
             Version = "v1"
         });
 
@@ -96,10 +95,10 @@ try
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
         {
             Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
-            Name        = "Authorization",
-            In          = ParameterLocation.Header,
-            Type        = SecuritySchemeType.Http,
-            Scheme      = "bearer",
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
             BearerFormat = "JWT"
         });
 
@@ -136,11 +135,7 @@ try
     var app = builder.Build();
 
     // ── Run Database Migrations ────────────────────────────────────────────
-    using (var scope = app.Services.CreateScope())
-    {
-        var db = scope.ServiceProvider.GetRequiredService<Messenger.Infrastructure.Persistence.ApplicationDbContext>();
-        db.Database.Migrate();
-    }
+    app.Services.InitializeDatabase();
 
     app.UseExceptionHandler();
 

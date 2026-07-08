@@ -28,9 +28,9 @@ public sealed class SearchMessagesQueryHandler : IRequestHandler<SearchMessagesQ
 
         return await _context.Messages
             .Where(m => m.ChatId == request.ChatId && m.Content != null && m.Content.ToLower().Contains(term))
-            .Join(_context.Users, 
-                  m => m.SenderId, 
-                  u => u.Id, 
+            .Join(_context.Users,
+                  m => m.SenderId,
+                  u => u.Id,
                   (m, u) => new { Message = m, User = u })
             .OrderByDescending(x => x.Message.CreatedAt)
             .Take(50)

@@ -52,16 +52,16 @@ public sealed class ProfileController : ControllerBase
 
         var result = await _sender.Send(
             new UpdateProfileCommand(
-                UserId:    userId,
+                UserId: userId,
                 FirstName: request.FirstName,
-                LastName:  request.LastName,
+                LastName: request.LastName,
                 AvatarUrl: request.AvatarUrl),
             ct);
 
         return Ok(new UpdateProfileResponse(
-            UserId:    result.UserId,
+            UserId: result.UserId,
             FirstName: result.FirstName,
-            LastName:  result.LastName,
+            LastName: result.LastName,
             AvatarUrl: result.AvatarUrl));
     }
 
@@ -82,12 +82,12 @@ public sealed class ProfileController : ControllerBase
 // ── DTOs ────────────────────────────────────────────────────────────────────
 
 public sealed record UpdateProfileRequest(
-    string  FirstName,
+    string FirstName,
     string? LastName,
     string? AvatarUrl);
 
 public sealed record UpdateProfileResponse(
-    Guid    UserId,
-    string  FirstName,
+    Guid UserId,
+    string FirstName,
     string? LastName,
     string? AvatarUrl);

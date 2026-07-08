@@ -20,34 +20,34 @@ public sealed class MessageSentNotificationHandler
     private readonly ILogger<MessageSentNotificationHandler> _logger;
 
     public MessageSentNotificationHandler(
-        IHubContext<ChatHub, IChatHubClient>    hubContext,
-        IApplicationDbContext                   dbContext,
-        IPushNotificationService                pushService,
+        IHubContext<ChatHub, IChatHubClient> hubContext,
+        IApplicationDbContext dbContext,
+        IPushNotificationService pushService,
         ILogger<MessageSentNotificationHandler> logger)
     {
-        _hubContext  = hubContext;
-        _dbContext   = dbContext;
+        _hubContext = hubContext;
+        _dbContext = dbContext;
         _pushService = pushService;
-        _logger      = logger;
+        _logger = logger;
     }
 
     public async Task Handle(
         MessageSentNotification notification,
-        CancellationToken       cancellationToken)
+        CancellationToken cancellationToken)
     {
         var msg = notification.Message;
 
         var dto = new ChatHubMessageDto(
-            MessageId:       msg.Id,
-            ChatId:          msg.ChatId,
-            SenderId:        msg.SenderId,
+            MessageId: msg.Id,
+            ChatId: msg.ChatId,
+            SenderId: msg.SenderId,
             SenderFirstName: string.Empty,   // resolved on the hub side from client cache
             SenderAvatarUrl: null,
-            Type:            msg.Type,
-            Content:         msg.Content,
-            MediaUrl:        msg.MediaUrl,
+            Type: msg.Type,
+            Content: msg.Content,
+            MediaUrl: msg.MediaUrl,
             ReplyToMessageId: msg.ReplyToMessageId,
-            CreatedAt:       msg.CreatedAt);
+            CreatedAt: msg.CreatedAt);
 
         var groupName = ChatHub.ChatGroupName(msg.ChatId);
 
@@ -78,7 +78,7 @@ public sealed class MessageSentNotificationHandler
             };
 
             await _pushService.SendNotificationAsync(device.DeviceToken, title, body, data);
-            
+
             _logger.LogDebug(
                 "Sent push notification to {DeviceType} for User {UserId}",
                 device.DeviceType, device.UserId);

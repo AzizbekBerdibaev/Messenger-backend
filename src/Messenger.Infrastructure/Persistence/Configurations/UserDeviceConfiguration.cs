@@ -9,7 +9,7 @@ public class UserDeviceConfiguration : IEntityTypeConfiguration<UserDevice>
     public void Configure(EntityTypeBuilder<UserDevice> builder)
     {
         builder.ToTable("UserDevices");
-        
+
         // Composite PK because a user could have multiple devices
         builder.HasKey(d => new { d.UserId, d.DeviceToken });
 

@@ -9,20 +9,20 @@ namespace Messenger.Domain.Entities;
 /// </summary>
 public sealed class Message
 {
-    public Guid        Id                { get; private set; }
-    public Guid        ChatId            { get; private set; }
-    public Guid        SenderId          { get; private set; }
-    public MessageType Type              { get; private set; }
-    public string?     Content           { get; private set; }
-    public string?     MediaUrl          { get; private set; }
-    public Guid?       ReplyToMessageId  { get; private set; }
-    public int?        Duration          { get; private set; }
-    public DateTime    CreatedAt         { get; private set; }
+    public Guid Id { get; private set; }
+    public Guid ChatId { get; private set; }
+    public Guid SenderId { get; private set; }
+    public MessageType Type { get; private set; }
+    public string? Content { get; private set; }
+    public string? MediaUrl { get; private set; }
+    public Guid? ReplyToMessageId { get; private set; }
+    public int? Duration { get; private set; }
+    public DateTime CreatedAt { get; private set; }
 
     // Navigation properties
-    public Chat?           Chat           { get; private set; }
-    public User?           Sender         { get; private set; }
-    public Message?        ReplyToMessage { get; private set; }
+    public Chat? Chat { get; private set; }
+    public User? Sender { get; private set; }
+    public Message? ReplyToMessage { get; private set; }
     public ICollection<MessageStatus> Statuses { get; private set; } = [];
 
     private Message() { }
@@ -33,13 +33,13 @@ public sealed class Message
         ArgumentException.ThrowIfNullOrWhiteSpace(content);
         return new Message
         {
-            Id               = Guid.NewGuid(),
-            ChatId           = chatId,
-            SenderId         = senderId,
-            Type             = MessageType.Text,
-            Content          = content,
+            Id = Guid.NewGuid(),
+            ChatId = chatId,
+            SenderId = senderId,
+            Type = MessageType.Text,
+            Content = content,
             ReplyToMessageId = replyToMessageId,
-            CreatedAt        = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         };
     }
 
@@ -49,14 +49,14 @@ public sealed class Message
         ArgumentException.ThrowIfNullOrWhiteSpace(mediaUrl);
         return new Message
         {
-            Id               = Guid.NewGuid(),
-            ChatId           = chatId,
-            SenderId         = senderId,
-            Type             = MessageType.Image,
-            Content          = content,
-            MediaUrl         = mediaUrl,
+            Id = Guid.NewGuid(),
+            ChatId = chatId,
+            SenderId = senderId,
+            Type = MessageType.Image,
+            Content = content,
+            MediaUrl = mediaUrl,
             ReplyToMessageId = replyToMessageId,
-            CreatedAt        = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         };
     }
 
@@ -66,14 +66,14 @@ public sealed class Message
         ArgumentException.ThrowIfNullOrWhiteSpace(mediaUrl);
         return new Message
         {
-            Id               = Guid.NewGuid(),
-            ChatId           = chatId,
-            SenderId         = senderId,
-            Type             = MessageType.Audio,
-            MediaUrl         = mediaUrl,
-            Duration         = duration,
+            Id = Guid.NewGuid(),
+            ChatId = chatId,
+            SenderId = senderId,
+            Type = MessageType.Audio,
+            MediaUrl = mediaUrl,
+            Duration = duration,
             ReplyToMessageId = replyToMessageId,
-            CreatedAt        = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         };
     }
 }

@@ -12,6 +12,6 @@ public sealed record CreatePrivateChatCommand(
 
 /// <summary>Result returned after creating (or retrieving existing) a private chat.</summary>
 public sealed record CreatePrivateChatResult(
-    Guid     ChatId,
-    bool     AlreadyExisted,
+    Guid ChatId,
+    bool AlreadyExisted,
     DateTime CreatedAt);

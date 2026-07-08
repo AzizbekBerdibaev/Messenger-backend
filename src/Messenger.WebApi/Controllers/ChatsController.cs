@@ -83,8 +83,8 @@ public sealed class ChatsController : ControllerBase
             new CreateGroupChatCommand(userId, request.ParticipantIds), ct);
 
         return CreatedAtAction(
-            actionName:    nameof(GetChatMessages),
-            routeValues:   new { chatId = result.ChatId },
+            actionName: nameof(GetChatMessages),
+            routeValues: new { chatId = result.ChatId },
             value: new CreateGroupChatResponse(
                 result.ChatId,
                 result.CreatedAt,
@@ -103,10 +103,10 @@ public sealed class ChatsController : ControllerBase
     [ProducesResponseType(typeof(GetChatMessagesResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetChatMessages(
-        Guid              chatId,
+        Guid chatId,
         [FromQuery] DateTime? before,
-        [FromQuery] int       limit = 50,
-        CancellationToken     ct    = default)
+        [FromQuery] int limit = 50,
+        CancellationToken ct = default)
     {
         var userId = GetCurrentUserId();
         var result = await _sender.Send(
@@ -134,17 +134,17 @@ public sealed class ChatsController : ControllerBase
 public sealed record CreatePrivateChatRequest(Guid OtherUserId);
 
 public sealed record CreatePrivateChatResponse(
-    Guid     ChatId,
-    bool     AlreadyExisted,
+    Guid ChatId,
+    bool AlreadyExisted,
     DateTime CreatedAt);
 
 public sealed record CreateGroupChatRequest(List<Guid> ParticipantIds);
 
 public sealed record CreateGroupChatResponse(
-    Guid     ChatId,
+    Guid ChatId,
     DateTime CreatedAt,
-    int      ParticipantCount);
+    int ParticipantCount);
 
 public sealed record GetChatMessagesResponse(
     List<MessageDto> Messages,
-    DateTime?        NextCursor);
+    DateTime? NextCursor);

@@ -38,10 +38,10 @@ public sealed class ContactsController : ControllerBase
 
         var contactId = await _sender.Send(
             new AddContactCommand(
-                UserId:      userId,
+                UserId: userId,
                 PhoneNumber: request.PhoneNumber,
-                FirstName:   request.FirstName,
-                LastName:    request.LastName),
+                FirstName: request.FirstName,
+                LastName: request.LastName),
             ct);
 
         return Ok(contactId);
@@ -75,6 +75,6 @@ public sealed class ContactsController : ControllerBase
 }
 
 public sealed record AddContactRequest(
-    string  PhoneNumber,
-    string  FirstName,
+    string PhoneNumber,
+    string FirstName,
     string? LastName);

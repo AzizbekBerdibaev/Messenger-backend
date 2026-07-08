@@ -26,7 +26,7 @@ public sealed class RedisOtpService : IOtpService
     {
         // 4-digit code with leading zero support ("0042")
         var code = Random.Shared.Next(0, 10_000).ToString("D4");
-        var key  = BuildKey(phoneNumber);
+        var key = BuildKey(phoneNumber);
 
         var db = _redis.GetDatabase();
         await db.StringSetAsync(key, code, ttl);
@@ -41,7 +41,7 @@ public sealed class RedisOtpService : IOtpService
         CancellationToken ct = default)
     {
         var key = BuildKey(phoneNumber);
-        var db  = _redis.GetDatabase();
+        var db = _redis.GetDatabase();
 
         // Atomic get-and-delete to prevent replay attacks
         var storedCode = await db.StringGetDeleteAsync(key);

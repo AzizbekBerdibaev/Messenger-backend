@@ -33,11 +33,11 @@ public sealed class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, 
 
         return contacts.Select(c => new ContactDto(
             ContactUserId: c.ContactUserId,
-            FirstName:     c.FirstName,
-            LastName:      c.LastName,
-            AvatarUrl:     c.AvatarUrl,
-            IsOnline:      (now - c.LastSeenAt).TotalMinutes < 5,
-            LastSeenAt:    c.LastSeenAt
+            FirstName: c.FirstName,
+            LastName: c.LastName,
+            AvatarUrl: c.AvatarUrl,
+            IsOnline: (now - c.LastSeenAt).TotalMinutes < 5,
+            LastSeenAt: c.LastSeenAt
         )).ToList();
     }
 }

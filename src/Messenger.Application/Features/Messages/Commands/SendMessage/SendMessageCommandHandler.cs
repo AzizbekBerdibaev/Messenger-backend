@@ -20,23 +20,23 @@ namespace Messenger.Application.Features.Messages.Commands.SendMessage;
 public sealed class SendMessageCommandHandler
     : IRequestHandler<SendMessageCommand, SendMessageResult>
 {
-    private readonly IApplicationDbContext           _db;
-    private readonly IPublisher                      _publisher;
+    private readonly IApplicationDbContext _db;
+    private readonly IPublisher _publisher;
     private readonly ILogger<SendMessageCommandHandler> _logger;
 
     public SendMessageCommandHandler(
-        IApplicationDbContext              db,
-        IPublisher                         publisher,
+        IApplicationDbContext db,
+        IPublisher publisher,
         ILogger<SendMessageCommandHandler> logger)
     {
-        _db        = db;
+        _db = db;
         _publisher = publisher;
-        _logger    = logger;
+        _logger = logger;
     }
 
     public async Task<SendMessageResult> Handle(
         SendMessageCommand command,
-        CancellationToken  cancellationToken)
+        CancellationToken cancellationToken)
     {
         // ── Step 1: Verify membership ──────────────────────────────────────────
         var participants = await _db.ChatParticipants
@@ -53,7 +53,7 @@ public sealed class SendMessageCommandHandler
         // Check if any participant has blocked the sender
         var isBlocked = await _db.BlockedUsers
             .AnyAsync(b => participants.Contains(b.UserId) && b.BlockedUserId == command.SenderId, cancellationToken);
-            
+
         if (isBlocked)
         {
             throw new UnauthorizedAccessException("You have been blocked by a participant in this chat.");
@@ -62,7 +62,7 @@ public sealed class SendMessageCommandHandler
         // ── Step 2: Create message via domain method ───────────────────────────
         Message message = command.Type switch
         {
-            MessageType.Text  => Message.CreateText(
+            MessageType.Text => Message.CreateText(
                 command.ChatId, command.SenderId,
                 command.Content!, command.ReplyToMessageId),
             MessageType.Image => Message.CreateImage(
@@ -100,14 +100,14 @@ public sealed class SendMessageCommandHandler
             cancellationToken);
 
         return new SendMessageResult(
-            MessageId:       message.Id,
-            ChatId:          message.ChatId,
-            SenderId:        message.SenderId,
-            Type:            message.Type,
-            Content:         message.Content,
-            MediaUrl:        message.MediaUrl,
-            Duration:        message.Duration,
+            MessageId: message.Id,
+            ChatId: message.ChatId,
+            SenderId: message.SenderId,
+            Type: message.Type,
+            Content: message.Content,
+            MediaUrl: message.MediaUrl,
+            Duration: message.Duration,
             ReplyToMessageId: message.ReplyToMessageId,
-            CreatedAt:       message.CreatedAt);
+            CreatedAt: message.CreatedAt);
     }
 }

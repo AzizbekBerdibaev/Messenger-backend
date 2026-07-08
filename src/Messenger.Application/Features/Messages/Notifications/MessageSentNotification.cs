@@ -9,5 +9,5 @@ namespace Messenger.Application.Features.Messages.Notifications;
 /// to push the message to recipients via SignalR.
 /// </summary>
 public sealed record MessageSentNotification(
-    Message   Message,
+    Message Message,
     List<Guid> RecipientIds) : INotification;

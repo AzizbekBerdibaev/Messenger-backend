@@ -17,15 +17,15 @@ public sealed class ApplicationDbContext : DbContext, IApplicationDbContext
     {
     }
 
-    public DbSet<User>            Users            => Set<User>();
-    public DbSet<Chat>            Chats            => Set<Chat>();
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Chat> Chats => Set<Chat>();
     public DbSet<ChatParticipant> ChatParticipants => Set<ChatParticipant>();
-    public DbSet<Message>         Messages         => Set<Message>();
-    public DbSet<MessageStatus>   MessageStatuses  => Set<MessageStatus>();
-    public DbSet<Story>           Stories          => Set<Story>();
-    public DbSet<UserDevice>      UserDevices      => Set<UserDevice>();
-    public DbSet<BlockedUser>     BlockedUsers     => Set<BlockedUser>();
-    public DbSet<Contact>         Contacts         => Set<Contact>();
+    public DbSet<Message> Messages => Set<Message>();
+    public DbSet<MessageStatus> MessageStatuses => Set<MessageStatus>();
+    public DbSet<Story> Stories => Set<Story>();
+    public DbSet<UserDevice> UserDevices => Set<UserDevice>();
+    public DbSet<BlockedUser> BlockedUsers => Set<BlockedUser>();
+    public DbSet<Contact> Contacts => Set<Contact>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

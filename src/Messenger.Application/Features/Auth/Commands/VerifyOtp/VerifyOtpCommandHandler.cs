@@ -16,21 +16,21 @@ namespace Messenger.Application.Features.Auth.Commands.VerifyOtp;
 /// </summary>
 public sealed class VerifyOtpCommandHandler : IRequestHandler<VerifyOtpCommand, VerifyOtpResult>
 {
-    private readonly IOtpService                      _otpService;
-    private readonly IJwtService                      _jwtService;
-    private readonly IApplicationDbContext            _db;
+    private readonly IOtpService _otpService;
+    private readonly IJwtService _jwtService;
+    private readonly IApplicationDbContext _db;
     private readonly ILogger<VerifyOtpCommandHandler> _logger;
 
     public VerifyOtpCommandHandler(
-        IOtpService                     otpService,
-        IJwtService                     jwtService,
-        IApplicationDbContext           db,
+        IOtpService otpService,
+        IJwtService jwtService,
+        IApplicationDbContext db,
         ILogger<VerifyOtpCommandHandler> logger)
     {
         _otpService = otpService;
         _jwtService = jwtService;
-        _db         = db;
-        _logger     = logger;
+        _db = db;
+        _logger = logger;
     }
 
     public async Task<VerifyOtpResult> Handle(VerifyOtpCommand request, CancellationToken cancellationToken)
@@ -47,12 +47,12 @@ public sealed class VerifyOtpCommandHandler : IRequestHandler<VerifyOtpCommand, 
         var existingUser = await _db.Users
             .FirstOrDefaultAsync(u => u.PhoneNumber == request.PhoneNumber, cancellationToken);
 
-        bool   isNewUser;
-        User   user;
+        bool isNewUser;
+        User user;
 
         if (existingUser is null)
         {
-            user      = User.Create(Guid.NewGuid(), request.PhoneNumber);
+            user = User.Create(Guid.NewGuid(), request.PhoneNumber);
             isNewUser = true;
             _db.Users.Add(user);
 
@@ -60,7 +60,7 @@ public sealed class VerifyOtpCommandHandler : IRequestHandler<VerifyOtpCommand, 
         }
         else
         {
-            user      = existingUser;
+            user = existingUser;
             isNewUser = false;
             user.TouchLastSeen();
 
@@ -73,9 +73,9 @@ public sealed class VerifyOtpCommandHandler : IRequestHandler<VerifyOtpCommand, 
         var tokens = _jwtService.GenerateTokenPair(user.Id, user.PhoneNumber);
 
         return new VerifyOtpResult(
-            UserId:      user.Id,
+            UserId: user.Id,
             PhoneNumber: user.PhoneNumber,
-            IsNewUser:   isNewUser,
-            Tokens:      tokens);
+            IsNewUser: isNewUser,
+            Tokens: tokens);
     }
 }
