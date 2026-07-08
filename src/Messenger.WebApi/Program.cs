@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Messenger.Application;
 using Messenger.Infrastructure;
 using Messenger.Infrastructure.Hubs;
@@ -134,13 +135,17 @@ try
     // ──────────────────────────────────────────────────────────────────────
     var app = builder.Build();
 
+    // ── Run Database Migrations ────────────────────────────────────────────
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<Messenger.Infrastructure.Persistence.ApplicationDbContext>();
+        db.Database.Migrate();
+    }
+
     app.UseExceptionHandler();
 
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
+    app.UseSwagger();
+    app.UseSwaggerUI();
 
     app.UseSerilogRequestLogging();
     app.UseCors();
