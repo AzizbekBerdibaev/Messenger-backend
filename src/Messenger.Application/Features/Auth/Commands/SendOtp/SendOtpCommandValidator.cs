@@ -8,8 +8,8 @@ namespace Messenger.Application.Features.Auth.Commands.SendOtp;
 /// </summary>
 public sealed class SendOtpCommandValidator : AbstractValidator<SendOtpCommand>
 {
-    // E.164 regex: starts with +, followed by 7–15 digits
-    private const string E164Pattern = @"^\+[1-9]\d{6,14}$";
+    // Uzbekistan format: +998 followed by 9 digits
+    private const string E164Pattern = @"^\+998\d{9}$";
 
     public SendOtpCommandValidator()
     {
@@ -17,6 +17,6 @@ public sealed class SendOtpCommandValidator : AbstractValidator<SendOtpCommand>
             .NotEmpty()
             .WithMessage("Phone number is required.")
             .Matches(E164Pattern)
-            .WithMessage("Phone number must be in E.164 format (e.g. +79991234567).");
+            .WithMessage("Phone number must be in format +998xxxxxxxxx.");
     }
 }

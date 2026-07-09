@@ -45,8 +45,8 @@ public class Program
 
     private static async Task RunTests()
     {
-        string phoneA = "+79990001111";
-        string phoneB = "+79990002222";
+        string phoneA = "+998900001111";
+        string phoneB = "+998900002222";
 
         // 1. Auth Flow
         Console.WriteLine("1. Testing Auth...");

@@ -42,8 +42,8 @@ public sealed class AuthFlowTests : IClassFixture<MessengerWebApplicationFactory
     public async Task FullAuthFlow_NewUser_CreatesUserAndReturnsJwt()
     {
         // ── Arrange ──────────────────────────────────────────────────────────
-        // Generate a valid E.164 phone number: +7 + 10 random digits
-        var phoneNumber = "+7" + Faker.Random.ReplaceNumbers("##########");
+        // Generate a valid E.164 phone number: +998 + 9 random digits
+        var phoneNumber = "+998" + Faker.Random.ReplaceNumbers("#########");
 
         // ── Act 1: Send OTP ───────────────────────────────────────────────────
         var sendResponse = await _client.PostAsJsonAsync(
@@ -109,7 +109,7 @@ public sealed class AuthFlowTests : IClassFixture<MessengerWebApplicationFactory
     public async Task VerifyOtp_WrongCode_Returns401()
     {
         // ── Arrange ───────────────────────────────────────────────────────────
-        var phoneNumber = "+7" + Faker.Random.ReplaceNumbers("##########");
+        var phoneNumber = "+998" + Faker.Random.ReplaceNumbers("#########");
 
         await _client.PostAsJsonAsync("/api/auth/send-otp", new SendOtpRequest(phoneNumber));
 
@@ -138,7 +138,7 @@ public sealed class AuthFlowTests : IClassFixture<MessengerWebApplicationFactory
     [InlineData("")]                  // empty
     [InlineData("   ")]               // whitespace
     [InlineData("79991234567")]       // missing leading +
-    [InlineData("+7999")]             // too short
+    [InlineData("+998")]             // too short
     [InlineData("+7abc1234567")]      // non-digit chars
     public async Task SendOtp_InvalidPhoneNumber_Returns400(string invalidPhone)
     {
@@ -158,7 +158,7 @@ public sealed class AuthFlowTests : IClassFixture<MessengerWebApplicationFactory
     public async Task RefreshToken_ValidToken_ReturnsNewTokenPair()
     {
         // ── Arrange: authenticate first ───────────────────────────────────────
-        var phoneNumber = "+7" + Faker.Random.ReplaceNumbers("##########");
+        var phoneNumber = "+998" + Faker.Random.ReplaceNumbers("#########");
         await _client.PostAsJsonAsync("/api/auth/send-otp", new SendOtpRequest(phoneNumber));
 
         var redisDb = _factory.Services.GetRequiredService<IConnectionMultiplexer>().GetDatabase();
@@ -195,7 +195,7 @@ public sealed class AuthFlowTests : IClassFixture<MessengerWebApplicationFactory
     public async Task VerifyOtp_ExistingUser_ReturnsIsNewUserFalse()
     {
         // ── Arrange: first login ───────────────────────────────────────────────
-        var phoneNumber = "+7" + Faker.Random.ReplaceNumbers("##########");
+        var phoneNumber = "+998" + Faker.Random.ReplaceNumbers("#########");
 
         await _client.PostAsJsonAsync("/api/auth/send-otp", new SendOtpRequest(phoneNumber));
         var redisDb = _factory.Services.GetRequiredService<IConnectionMultiplexer>().GetDatabase();

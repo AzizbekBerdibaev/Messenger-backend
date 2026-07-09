@@ -39,7 +39,7 @@ public sealed class CreatePrivateChatCommandHandlerTests
         // No existing chats, userB exists
         var chatSet = TestDbSetHelper.CreateMockDbSet<Chat>([]);
         var participantSet = TestDbSetHelper.CreateMockDbSet<ChatParticipant>([]);
-        var userB_entity = User.Create(userB, "+79991234567");
+        var userB_entity = User.Create(userB, "+998901234567");
         var usersSet = TestDbSetHelper.CreateMockDbSet<User>([userB_entity]);
 
         _dbMock.Setup(d => d.Chats).Returns(chatSet);

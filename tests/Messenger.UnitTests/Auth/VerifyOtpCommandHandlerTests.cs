@@ -35,7 +35,7 @@ public sealed class VerifyOtpCommandHandlerTests
     public async Task Handle_ValidOtp_NewUser_CreatesUserAndReturnsTokens()
     {
         // ── Arrange ───────────────────────────────────────────────────────────
-        var phone = "+7" + Faker.Random.ReplaceNumbers("##########");
+        var phone = "+998" + Faker.Random.ReplaceNumbers("#########");
         var command = new VerifyOtpCommand(phone, "1234");
 
         // OTP validates successfully
@@ -77,7 +77,7 @@ public sealed class VerifyOtpCommandHandlerTests
     public async Task Handle_ValidOtp_ExistingUser_DoesNotCreateAndReturnsIsNewUserFalse()
     {
         // ── Arrange ───────────────────────────────────────────────────────────
-        var phone = "+7" + Faker.Random.ReplaceNumbers("##########");
+        var phone = "+998" + Faker.Random.ReplaceNumbers("#########");
         var existingUser = User.Create(Guid.NewGuid(), phone);
         var command = new VerifyOtpCommand(phone, "5678");
 
@@ -109,7 +109,7 @@ public sealed class VerifyOtpCommandHandlerTests
     public async Task Handle_InvalidOtp_ThrowsUnauthorized()
     {
         // ── Arrange ───────────────────────────────────────────────────────────
-        var phone = "+7" + Faker.Random.ReplaceNumbers("##########");
+        var phone = "+998" + Faker.Random.ReplaceNumbers("#########");
         var command = new VerifyOtpCommand(phone, "0000");
 
         _otpServiceMock

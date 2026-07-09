@@ -5,7 +5,7 @@ namespace Messenger.Application.Features.Auth.Commands.VerifyOtp;
 /// <summary>Validates <see cref="VerifyOtpCommand"/> before it reaches the handler.</summary>
 public sealed class VerifyOtpCommandValidator : AbstractValidator<VerifyOtpCommand>
 {
-    private const string E164Pattern = @"^\+[1-9]\d{6,14}$";
+    private const string E164Pattern = @"^\+998\d{9}$";
 
     public VerifyOtpCommandValidator()
     {
@@ -13,7 +13,7 @@ public sealed class VerifyOtpCommandValidator : AbstractValidator<VerifyOtpComma
             .NotEmpty()
             .WithMessage("Phone number is required.")
             .Matches(E164Pattern)
-            .WithMessage("Phone number must be in E.164 format.");
+            .WithMessage("Phone number must be in format +998xxxxxxxxx.");
 
         RuleFor(x => x.Code)
             .NotEmpty()

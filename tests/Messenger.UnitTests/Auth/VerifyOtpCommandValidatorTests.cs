@@ -19,7 +19,7 @@ public sealed class VerifyOtpCommandValidatorTests
     [InlineData("9999")]
     public async Task Validate_ValidCode_Passes(string code)
     {
-        var result = await _validator.ValidateAsync(new VerifyOtpCommand("+79991234567", code));
+        var result = await _validator.ValidateAsync(new VerifyOtpCommand("+998901234567", code));
         result.IsValid.Should().BeTrue();
     }
 
@@ -31,7 +31,7 @@ public sealed class VerifyOtpCommandValidatorTests
     [InlineData("12 4", "OTP code must consist of 4 digits.")]
     public async Task Validate_InvalidCode_Fails(string code, string expectedError)
     {
-        var result = await _validator.ValidateAsync(new VerifyOtpCommand("+79991234567", code));
+        var result = await _validator.ValidateAsync(new VerifyOtpCommand("+998901234567", code));
 
         result.IsValid.Should().BeFalse();
         result.Errors.Should().Contain(e =>

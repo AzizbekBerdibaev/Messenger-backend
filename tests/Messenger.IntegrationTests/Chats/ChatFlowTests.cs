@@ -39,7 +39,7 @@ public sealed class ChatFlowTests : IClassFixture<MessengerWebApplicationFactory
 
     private async Task<(Guid UserId, string AccessToken)> AuthenticateUserAsync()
     {
-        var phone = "+7" + Faker.Random.ReplaceNumbers("##########");
+        var phone = "+998" + Faker.Random.ReplaceNumbers("#########");
 
         // Send OTP
         await _client.PostAsJsonAsync("/api/auth/send-otp", new SendOtpRequest(phone));

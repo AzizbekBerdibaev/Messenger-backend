@@ -13,9 +13,9 @@ public sealed class SearchUsersQueryHandlerTests
     public async Task Handle_ValidSearchTerm_ReturnsMatchedUsers()
     {
         var dbMock = new Mock<IApplicationDbContext>();
-        var user1 = User.Create(Guid.NewGuid(), "+79991234567");
+        var user1 = User.Create(Guid.NewGuid(), "+998901234567");
         user1.UpdateProfile("John", "Doe", null);
-        var user2 = User.Create(Guid.NewGuid(), "+79997654321");
+        var user2 = User.Create(Guid.NewGuid(), "+998907654321");
         user2.UpdateProfile("Jane", "Smith", null);
 
         var users = new List<User> { user1, user2 };
