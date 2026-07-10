@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
 using Testcontainers.PostgreSql;
 using Testcontainers.Redis;
@@ -71,6 +72,16 @@ public sealed class MessengerWebApplicationFactory
             services.RemoveAll<IConnectionMultiplexer>();
             services.AddSingleton<IConnectionMultiplexer>(
                 ConnectionMultiplexer.Connect(RedisConnectionString));
+
+            // ── Mock Telegram / SMS ───────────────────────────────────────────
+            services.RemoveAll<Messenger.Application.Common.Interfaces.ISmsService>();
+            services.AddScoped<Messenger.Application.Common.Interfaces.ISmsService, Messenger.Infrastructure.Services.ConsoleSmsService>();
+            
+            // Remove TelegramBotListener to prevent it from polling during tests
+            var descriptor = services.FirstOrDefault(d => 
+                d.ImplementationType == typeof(Messenger.Infrastructure.Services.Telegram.TelegramBotListener));
+            if (descriptor != null)
+                services.Remove(descriptor);
 
             // ── Run migrations & ensure schema exists ─────────────────────────
             using var scope = services.BuildServiceProvider().CreateScope();

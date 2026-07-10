@@ -3,10 +3,12 @@ using Messenger.Application.Common.Interfaces;
 using Messenger.Domain.Interfaces;
 using Messenger.Infrastructure.Persistence;
 using Messenger.Infrastructure.Services;
+using Messenger.Infrastructure.Services.Telegram;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
+using Telegram.Bot;
 
 namespace Messenger.Infrastructure;
 
@@ -51,7 +53,14 @@ public static class DependencyInjection
         services.AddScoped<IStorageService, DummyStorageService>();
         services.AddScoped<IPushNotificationService, DummyPushNotificationService>();
         services.AddScoped<IJwtService, JwtService>();
-        services.AddScoped<ISmsService, ConsoleSmsService>();
+        
+        // ── Telegram Bot / SMS ────────────────────────────────────────────────
+        var botToken = configuration["Telegram:BotToken"] 
+            ?? throw new InvalidOperationException("Telegram:BotToken configuration not found.");
+        
+        services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(botToken));
+        services.AddScoped<ISmsService, TelegramSmsService>();
+        services.AddHostedService<TelegramBotListener>();
 
         // ── JWT Settings ───────────────────────────────────────────────────────
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
