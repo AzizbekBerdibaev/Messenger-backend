@@ -38,6 +38,19 @@ public class TelegramBotListener : BackgroundService
 
         _logger.LogInformation("Starting Telegram bot polling with auto-reconnect...");
 
+        // Ensure bot metadata and descriptions are officially configured and free from unwanted ads
+        try
+        {
+            await _botClient.SetMyName("Messenger Auth", cancellationToken: stoppingToken);
+            await _botClient.SetMyDescription("Официальный бот авторизации Messenger. Отправляет одноразовые коды (OTP) для входа в приложение.", cancellationToken: stoppingToken);
+            await _botClient.SetMyShortDescription("Бот авторизации Messenger.", cancellationToken: stoppingToken);
+            _logger.LogInformation("Telegram bot metadata successfully synchronized.");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to synchronize bot metadata upon startup.");
+        }
+
         while (!stoppingToken.IsCancellationRequested)
         {
             try

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using Telegram.Bot;
+using Telegram.Bot.Exceptions;
 
 namespace Messenger.Infrastructure.Services.Telegram;
 
@@ -85,14 +86,27 @@ public class TelegramSmsService : ISmsService
         if (chatId is null)
         {
             _logger.LogWarning("Cannot send OTP. User with phone {Phone} is not registered in Telegram bot.", phoneNumber);
-            throw new InvalidOperationException($"User not registered in Telegram bot. Please start the bot and share your contact first.");
+            throw new InvalidOperationException($"Номер {phoneNumber} ещё не привязан к Telegram-боту. Пожалуйста, откройте бота в Telegram и отправьте команду /start, затем нажмите «Поделиться контактом».");
         }
 
         _logger.LogInformation("Sending Telegram message to ChatId {ChatId} for Phone {Phone}", chatId, phoneNumber);
 
-        await _botClient.SendMessage(
-            chatId: chatId.Value,
-            text: message,
-            cancellationToken: cancellationToken);
+        try
+        {
+            await _botClient.SendMessage(
+                chatId: chatId.Value,
+                text: message,
+                cancellationToken: cancellationToken);
+        }
+        catch (ApiRequestException apiEx) when (apiEx.ErrorCode == 400 || apiEx.Message.Contains("chat not found", StringComparison.OrdinalIgnoreCase))
+        {
+            _logger.LogWarning(apiEx, "Telegram chat {ChatId} not found for phone {Phone}", chatId, phoneNumber);
+            throw new InvalidOperationException($"Чат с Telegram-ботом не найден. Откройте бота в Telegram, отправьте команду /start и поделитесь контактом.");
+        }
+        catch (ApiRequestException apiEx) when (apiEx.ErrorCode == 403)
+        {
+            _logger.LogWarning(apiEx, "Telegram bot was blocked by user with ChatId {ChatId}", chatId);
+            throw new InvalidOperationException("Telegram-бот был заблокирован вами. Пожалуйста, разблокируйте бота для получения кодов авторизации.");
+        }
     }
 }
