@@ -82,5 +82,14 @@ public static class DependencyInjection
         using var scope = provider.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         db.Database.Migrate();
+
+        // Ensure telegram_bindings table exists for permanent persistence of phone -> Telegram chatId mappings
+        db.Database.ExecuteSqlRaw(@"
+            CREATE TABLE IF NOT EXISTS telegram_bindings (
+                phone_number VARCHAR(32) PRIMARY KEY,
+                chat_id BIGINT NOT NULL,
+                updated_at TIMESTAMP WITH TIME ZONE NOT NULL
+            );
+        ");
     }
 }
